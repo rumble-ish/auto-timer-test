@@ -5,7 +5,7 @@
   <title>Timer Demo</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="jquery.runner.js" type="text/javascript"></script>
-<!-- <script src="chrome-bluetooth.js" type="text/javascript"></script> -->
+<script src="chrome-bluetooth.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -19,15 +19,15 @@
 		    $('#runner').runner('start');
 		});
 	</script>
-	<script>
-  document.querySelector('button').addEventListener('click', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    if (isWebBluetoothEnabled()) {
-      ChromeSamples.clearLog();
-      onButtonClick();
-    }
-  });
-</script>
+// 	<script>
+//   document.querySelector('button').addEventListener('click', function(event) {
+//     event.stopPropagation();
+//     event.preventDefault();
+//     if (isWebBluetoothEnabled()) {
+//       ChromeSamples.clearLog();
+//       onButtonClick();
+//     }
+//   });
+// </script>
 </body>
 </html>
