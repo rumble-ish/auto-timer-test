@@ -117,7 +117,7 @@ function anyDevice() {
     }
   }
 
-  document.querySelector('a').addEventListener('click', function(event) {
+  document.qgetElementById('save').addEventListener('click', function(event) {
     var input = document.getElementById("userInput").value;
     console.log(input);
 });
@@ -125,7 +125,7 @@ function anyDevice() {
 </script>
 <form>
 	<input type="text" name="devicename" id="device-name">
-	<a href="#">save</a>
+	<a id="save" href="#">save</a>
 </br>
 </br>
   <button>Scan</button>
