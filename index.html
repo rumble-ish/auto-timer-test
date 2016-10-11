@@ -11,11 +11,24 @@
 </head>
 <body>
 	<span id="runner"></span>
+<form>
+  <button>Scan</button>
+</form>
 	<script type="text/javascript">
 		$('#runner').runner();
 		$('#myButton').click(function() {
 		    $('#runner').runner('start');
 		});
 	</script>
+	<script>
+  document.querySelector('button').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (isWebBluetoothEnabled()) {
+      ChromeSamples.clearLog();
+      onButtonClick();
+    }
+  });
+</script>
 </body>
 </html>
