@@ -133,7 +133,7 @@ function exponentialBackoff(max, delay, toTry, success, fail) {
     time('Retrying in ' + delay + 's... (' + max + ' tries left)');
     setTimeout(function() {
       exponentialBackoff(--max, delay * 2, toTry, success, fail);
-    }, delay * 100000);
+    }, delay * 10000000);
   });
 }
 function anyDevice() {
