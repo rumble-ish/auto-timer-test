@@ -49,6 +49,10 @@ limitations under the License.
     });
   });
 
+function othername() {
+    var input = document.getElementById("userInput").value;
+    console.log(input);
+}
   if (/Chrome\/(\d+\.\d+.\d+.\d+)/.test(navigator.userAgent)){
     // Let's log a warning if the sample is not supposed to execute on this
     // version of Chrome.
@@ -116,8 +120,7 @@ function anyDevice() {
       return false;
     }
   }
-
-  document.getElementById('save').addEventListener('click', function(event) {
+    document.getElementById('save').addEventListener('click', function(event) {
     var input = document.getElementById("userInput").value;
     console.log(input);
 });
