@@ -46,9 +46,7 @@ limitations under the License.
   if('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
   }
-</script>
 
-<script>
   window.addEventListener('DOMContentLoaded', function() {
     const searchParams = new URL(location).searchParams;
     const inputs = Array.from(document.querySelectorAll('input[id]'));
@@ -68,20 +66,7 @@ limitations under the License.
       });
     });
   });
-</script>
-<form>
-	<input type="text" name="devicename" id="device-name">
-  <button>Scan</button>
-</form>
-<h3>Live Output</h3>
-<div id="output" class="output">
-  <div id="content"></div>
-  <div id="status"></div>
-  <pre id="log"></pre>
-</div>
 
-
-<script>
 function othername() {
     var input = document.getElementById("userInput").value;
     alert(input);
@@ -90,14 +75,8 @@ function othername() {
     // Let's log a warning if the sample is not supposed to execute on this
     // version of Chrome.
   }
-</script>
 
-
-
-
-  
-    
-      <script>var bluetoothDevice;
+var bluetoothDevice;
 function onButtonClick() {
   bluetoothDevice = null;
   navigator.bluetooth.requestDevice({filters: anyDevice()})
@@ -143,9 +122,7 @@ function anyDevice() {
       .map(c => ({namePrefix: c}))
       .concat({name: ''});
 }
-</script>
-    
-<script>
+
   document.querySelector('button').addEventListener('click', function(event) {
     event.stopPropagation();
     event.preventDefault();
@@ -153,9 +130,7 @@ function anyDevice() {
       onButtonClick();
     }
   });
-</script>
 
-<script>
   function isWebBluetoothEnabled() {
     if (navigator.bluetooth) {
       return true;
@@ -164,6 +139,19 @@ function anyDevice() {
     }
   }
 </script>
+<form>
+	<input type="text" name="devicename" id="device-name">
+	<a href="#">save</a>
+</br>
+</br>
+  <button>Scan</button>
+</form>
+<h3>Live Output</h3>
+<div id="output" class="output">
+  <div id="content"></div>
+  <div id="status"></div>
+  <pre id="log"></pre>
+</div>
 
   </body>
 </html>
