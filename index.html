@@ -57,6 +57,7 @@ limitations under the License.
   });
 </script>
 <form>
+	<input type="text" name="devicename" id="device-name">
   <button>Scan</button>
 </form>
 <h3>Live Output</h3>
@@ -68,6 +69,11 @@ limitations under the License.
 
 
 <script>
+function othername() {
+    var input = document.getElementById("userInput").value;
+    alert(input);
+}
+
   if (/Chrome\/(\d+\.\d+.\d+.\d+)/.test(navigator.userAgent)){
     // Let's log a warning if the sample is not supposed to execute on this
     // version of Chrome.
@@ -89,9 +95,6 @@ function onButtonClick() {
     bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
     connect();
   })
-  .catch(error => {
-    log('Argh! ' + error);
-  });
 }
 
 function connect() {
@@ -100,16 +103,12 @@ function connect() {
       time('Connecting to Bluetooth Device... ');
       return bluetoothDevice.gatt.connect();
     },
-    function success() {
-      log('> Bluetooth Device connected. Try disconnect it now.');
-    },
     function fail() {
       time('Failed to reconnect.');
     });
 }
 
 function onDisconnected() {
-  log('> Bluetooth Device disconnected');
   connect();
 }
 
@@ -137,10 +136,6 @@ function anyDevice() {
   return Array.from('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
       .map(c => ({namePrefix: c}))
       .concat({name: ''});
-}
-
-function time(text) {
-  log('[' + new Date().toJSON().substr(11, 8) + '] ' + text);
 }
 </script>
     
