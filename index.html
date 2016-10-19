@@ -1,16 +1,5 @@
+
 <!doctype html>
-<!--
-Copyright 2016 Google Inc. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-  http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -18,20 +7,25 @@ limitations under the License.
     <meta name="description" content="Sample illustrating the use of Web Bluetooth / Automatic Reconnect.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta http-equiv="origin-trial" content="AnLdgsfq0LCSh86RKcjZxXxRcP0rMTeMBwFNDF/6EIvxrjRARVPMbmJJ7MVIrqkWScDGT1rkdIR07hteek98SQkAAABheyJvcmlnaW4iOiAiaHR0cHM6Ly9nb29nbGVjaHJvbWUuZ2l0aHViLmlvOjQ0MyIsICJmZWF0dXJlIjogIldlYkJsdWV0b290aCIsICJleHBpcnkiOiAxNDc2ODE1NjMwfQ==">
-    
     <title>Web Bluetooth / Automatic Reconnect Sample</title>
-</head>
+
+    
+  </head>
 
   <body>
+   
+
 <script>
   if('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
   }
+</script>
 
+<script>
   window.addEventListener('DOMContentLoaded', function() {
     const searchParams = new URL(location).searchParams;
     const inputs = Array.from(document.querySelectorAll('input[id]'));
+
     inputs.forEach(input => {
       if (searchParams.has(input.id)) {
         input.value = searchParams.get(input.id);
@@ -48,36 +42,84 @@ limitations under the License.
       });
     });
   });
+</script>
 
-  if (/Chrome\/(\d+\.\d+.\d+.\d+)/.test(navigator.userAgent)){
-    // Let's log a warning if the sample is not supposed to execute on this
-    // version of Chrome.
-  }
+<form>
+  <button>Scan</button>
+</form>
 
-var bluetoothDevice;
+<script>
+  var ChromeSamples = {
+    log: function() {
+      var line = Array.prototype.slice.call(arguments).map(function(argument) {
+        return typeof argument === 'string' ? argument : JSON.stringify(argument);
+      }).join(' ');
+
+      document.querySelector('#log').textContent += line + '\n';
+    },
+
+    clearLog: function() {
+      document.querySelector('#log').textContent = '';
+    },
+
+    setStatus: function(status) {
+      document.querySelector('#status').textContent = status;
+    },
+
+    setContent: function(newContent) {
+      var content = document.querySelector('#content');
+      while(content.hasChildNodes()) {
+        content.removeChild(content.lastChild);
+      }
+      content.appendChild(newContent);
+    }
+  };
+</script>
+
+<h3>Live Output</h3>
+<div id="output" class="output">
+  <div id="content"></div>
+  <div id="status"></div>
+  <pre id="log"></pre>
+</div>
+    
+      <script>var bluetoothDevice;
+
 function onButtonClick() {
   bluetoothDevice = null;
+  log('Requesting any Bluetooth Device...');
   navigator.bluetooth.requestDevice({filters: anyDevice()})
   .then(device => {
     bluetoothDevice = device;
     bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
     connect();
   })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
 }
+
 function connect() {
   exponentialBackoff(3 /* max retries */, 2 /* seconds delay */,
     function toTry() {
       time('Connecting to Bluetooth Device... ');
       return bluetoothDevice.gatt.connect();
     },
+    function success() {
+      log('> Bluetooth Device connected. Try disconnect it now.');
+    },
     function fail() {
       time('Failed to reconnect.');
     });
 }
+
 function onDisconnected() {
+  log('> Bluetooth Device disconnected');
   connect();
 }
+
 /* Utils */
+
 // This function keeps calling "toTry" until promise resolves or has
 // retried "max" number of times. First retry has a delay of "delay" seconds.
 // "success" is called upon success.
@@ -90,9 +132,10 @@ function exponentialBackoff(max, delay, toTry, success, fail) {
     time('Retrying in ' + delay + 's... (' + max + ' tries left)');
     setTimeout(function() {
       exponentialBackoff(--max, delay * 2, toTry, success, fail);
-    }, delay * 10000000);
+    }, delay * 1000);
   });
 }
+
 function anyDevice() {
   // This is the closest we can get for now to get all devices.
   // https://github.com/WebBluetoothCG/web-bluetooth/issues/234
@@ -101,43 +144,22 @@ function anyDevice() {
       .concat({name: ''});
 }
 
+function time(text) {
+  log('[' + new Date().toJSON().substr(11, 8) + '] ' + text);
+}
+</script>
+    
+<script>
   document.querySelector('button').addEventListener('click', function(event) {
     event.stopPropagation();
     event.preventDefault();
+
     if (isWebBluetoothEnabled()) {
+      ChromeSamples.clearLog();
       onButtonClick();
     }
   });
-
-  function isWebBluetoothEnabled() {
-    if (navigator.bluetooth) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  document.getElementById('save').addEventListener('click', function(event) {
-    var input = document.getElementById("userInput").value;
-    console.log(input);
-});
-  
 </script>
-<form>
-	<input type="text" name="devicename" id="device-name">
-	<button id="save">save</button>
-</br>
-</br>
-  <button>Scan</button>
-</form>
-<h3>Live Output</h3>
-<div id="output" class="output">
-  <div id="content"></div>
-  <div id="status"></div>
-  <pre id="log"></pre>
-</div>
 
   </body>
 </html>
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
